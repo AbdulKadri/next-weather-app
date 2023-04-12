@@ -7,11 +7,20 @@ module.exports = {
   ],
   theme: {
     extend: {
-      backgroundImage: {
-        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'gradient-conic':
-          'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
+      fontFamily: {
+        quicksand: ['var(--font-quicksand)'],
       },
+      backgroundImage: {
+        'temp-image': "url('/Temp-background.jpg')",
+      },
+      boxShadow: {
+        'cover': 'inset 0 0 0 1000px rgba(0,0,0,.4);'
+      },
+      colors: {
+        'primary': '#68EDC6',
+        'secondary': '#90F3FF',
+        'background': '#C4BBAF',
+      }
     },
   },
   plugins: [],

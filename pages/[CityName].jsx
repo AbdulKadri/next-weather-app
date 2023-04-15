@@ -1,7 +1,7 @@
+import Head from 'next/head';
 import { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar'
 import axios from "axios"
-import { useRouter } from 'next/router';
 
 
 const CityPage = ({ data }) => {
@@ -35,12 +35,15 @@ const CityPage = ({ data }) => {
     const roundedFeelsLike = data ? Math.round(data.main.feels_like) : null;
 
     return (
-        <div>
+        <div className='min-h-screen'>
+            <Head>
+                <title>Apex Weather | {data.name}</title>
+            </Head>
             <Navbar />
             {data && (
-                <div className='flex flex-col w-2/5 h-[80vh] mx-auto my-3 items-center bg-slate-400 rounded-xl'>
+                <div className='flex flex-col w-2/5 mx-auto my-3 items-center bg-slate-400 rounded-xl'>
                     <div className='m-5'>
-                        <h1 className="text-5xl text-center text-white bold">{data.name}</h1>
+                        <h1 className="text-5xl m-2 text-center text-white bold">{data.name}</h1>
                         <p>@ {currentDate}, {currentTime}</p>
                     </div>
                     <p className="text-center m-5">

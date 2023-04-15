@@ -16,11 +16,11 @@ const Custom404 = () => {
                     ></span>
 
                     <span className="relative block px-8 py-3 border border-current bg-[#FF6A3D]">
-                        <p classNameName="text-white font-bold">Go Home</p>
+                        <p className="text-white font-bold">Go Home</p>
                     </span>
                 </Link>
             </button>
-            <Link href={'https://tailwindcomponents.com/u/atif0075'} target="_" classNameName="text-white absolute bottom-0 left-0 m-5 cursoer-pointer">page by <u>atif0075</u></Link>
+            <Link href={'https://tailwindcomponents.com/u/atif0075'} target="_" className="text-white absolute bottom-0 left-0 m-5 cursoer-pointer">page by <u>atif0075</u></Link>
         </div>
     )
 }

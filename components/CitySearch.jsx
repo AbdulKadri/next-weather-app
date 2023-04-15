@@ -6,11 +6,13 @@ const CitySearch = () => {
     const [city, setCity] = useState('')
     const router = useRouter();
 
-    const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${process.env.NEXT_PUBLIC_WEATHER_API_KEY}`
 
 
     const handleSubmit = async (e) => {
         e.preventDefault()
+
+        const url = `${process.env.NEXT_PUBLIC_WEATHER_URL}${city}&appid=${process.env.NEXT_PUBLIC_WEATHER_API_KEY}&units=metric`
+
         router.push({
             pathname: `/${city}`,
             query: { url },

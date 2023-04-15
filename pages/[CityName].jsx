@@ -1,31 +1,70 @@
+import { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar'
-import { useRouter } from 'next/router'
 import axios from "axios"
-import { useState, useEffect } from 'react'
 
-const CityPage = () => {
-    const router = useRouter()
-    const url = router.query.url
+const CityPage = ({ data }) => {
+    const [currentTime, setCurrentTime] = useState('');
+    const [currentDate, setCurrentDate] = useState('');
 
-    const [data, setData] = useState(null);
-
+    // Get the current date & time in the location
     useEffect(() => {
-        axios.get(url).then((response) => {
-            setData(response.data);
-        });
-    }, [url]);
+        if (data) {
+            const timezoneOffset = data.timezone;
+            const localTimeOffset = new Date().getTimezoneOffset() * 60;
+            const currentTimeInMilliseconds = new Date().getTime();
+            const currentTimeInLocation = new Date(currentTimeInMilliseconds + (timezoneOffset + localTimeOffset) * 1000);
+            setCurrentTime(currentTimeInLocation.toLocaleTimeString("en-US", {
+                hour: "numeric",
+                minute: "numeric",
+                hour12: true
+            }));
+
+            const currentDateInMilliseconds = data.dt * 1000;
+            const currentDateInLocation = new Date(currentDateInMilliseconds + (timezoneOffset + localTimeOffset) * 1000);
+            setCurrentDate(currentDateInLocation.toLocaleDateString("en-US", {
+                month: "long",
+                day: "numeric"
+            }));
+        }
+    }, [data]);
+
+    // Round the temperature to the nearest whole number
+    const roundedTemp = data ? Math.round(data.main.temp) : null;
+    const roundedFeelsLike = data ? Math.round(data.main.feels_like) : null;
 
     return (
         <div>
             <Navbar />
             {data && (
-                <div>
-                    <p>Received data:</p>
-                    <pre>{JSON.stringify(data, null, 2)}</pre>
+                <div className='flex flex-col w-2/5 h-[80vh] mx-auto my-3 items-center bg-slate-400 rounded-xl'>
+                    <div className='m-5'>
+                        <h1 className="text-5xl text-center text-white bold">{data.name}</h1>
+                        <p>@ {currentDate}, {currentTime}</p>
+                    </div>
+                    <p className="text-center m-5">
+                        Weather: {data.weather[0].main}, {data.weather[0].description}
+                        <br />
+                        Clouds: {data.clouds.all}%
+                    </p>
+                    <img src={`http://openweathermap.org/img/w/${data.weather[0].icon}.png`} width={100} height={100} className="" />
+                    <p className="text-center m-5">{roundedTemp}<span>&#176;C</span></p>
+                    <p className="text-center m-5">Feels Like: {roundedFeelsLike}<span>&#176;C</span></p>
                 </div>
             )}
         </div>
     );
+}
+
+export async function getServerSideProps(context) {
+    const { query } = context;
+    const url = query.url;
+
+    const response = await axios.get(url);
+    const data = response.data;
+
+    return {
+        props: { data },
+    };
 }
 
 export default CityPage

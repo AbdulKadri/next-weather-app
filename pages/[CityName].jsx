@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar'
 import axios from "axios"
+import { useRouter } from 'next/router';
+
 
 const CityPage = ({ data }) => {
     const [currentTime, setCurrentTime] = useState('');
@@ -56,15 +58,31 @@ const CityPage = ({ data }) => {
 }
 
 export async function getServerSideProps(context) {
-    const { query } = context;
+    const { query, res } = context;
     const url = query.url;
 
-    const response = await axios.get(url);
-    const data = response.data;
+    try {
+        const response = await axios.get(url);
+        const data = response.data;
 
-    return {
-        props: { data },
-    };
+        // Check if the data contains a valid city name
+        if (!data || !data.name) {
+            res.statusCode = 404;
+            return {
+                notFound: true,
+            };
+        }
+
+        return {
+            props: { data },
+        };
+    } catch (error) {
+        // In case of an error (e.g., invalid API key or request error), redirect to the 404 error page
+        res.statusCode = 404;
+        return {
+            notFound: true,
+        };
+    }
 }
 
 export default CityPage

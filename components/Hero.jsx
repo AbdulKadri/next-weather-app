@@ -1,7 +1,10 @@
+import { useState } from 'react';
 import { FaMapPin } from 'react-icons/fa'
 import CitySearch from '../components/CitySearch'
 
 const Hero = () => {
+    const [searchError, setSearchError] = useState(false);
+
     return (
         <main lang='en'>
             <div className="min-h-[80vh] w-screen
@@ -13,7 +16,7 @@ const Hero = () => {
                     </h1>
                     <p className="text-2xl text-white w-4/5 text-center">Discover the current Weather, Air Pollution index & more in your city</p>
 
-                    <CitySearch />
+                    <CitySearch onError={setSearchError} searchError={searchError} />
 
                     <div className="flex mt-2">
                         <FaMapPin color="#68EDC6" className="h-6 w-6" />

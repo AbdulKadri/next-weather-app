@@ -44,8 +44,9 @@ const CityPage = ({ data, cityImageUrl }) => {
             setCurrentFeelsLike(Math.round(data.main.feels_like));
 
             // convert the country code to the country name
-            setCountryCode[data.sys.country]
-            setCountryName[countries[countryCode].name]
+            setCountryCode(data.sys.country);
+            setCountryName(countries[data.sys.country].name);
+
 
             setCityImage(cityImageUrl);
         }
@@ -89,20 +90,10 @@ export async function getServerSideProps(context) {
     const cityName = params.city;
 
     try {
-        const response = await axios.get(
-            `${process.env.NEXT_PUBLIC_WEATHER_URL}${cityName}&appid=${process.env.NEXT_PUBLIC_WEATHER_API_KEY}&units=metric`
-        );
-        const data = response.data;
+        const weatherResponse = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/weather?city=${cityName}`);
+        const data = weatherResponse.data;
 
-        if (!data || !data.name) {
-            return {
-                notFound: true,
-            };
-        }
-
-        const unsplashResponse = await axios.get(
-            `${process.env.NEXT_PUBLIC_SERVER_URL}/api/unsplash?city=${data.name}`
-        );
+        const unsplashResponse = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/unsplash?city=${data.name}`);
         const cityImageUrl = unsplashResponse.data.cityImageUrl;
 
         return {

@@ -1,13 +1,19 @@
 import axios from 'axios';
 
-export const validateCity = async (city) => {
+const validateCity = async (city) => {
     try {
-        const url = `${process.env.NEXT_PUBLIC_WEATHER_URL}${city}&appid=${process.env.NEXT_PUBLIC_WEATHER_API_KEY}&units=metric`;
-
-        await axios.get(url);
-
+        await axios.get(
+            `${process.env.NEXT_PUBLIC_SERVER_URL}/api/weather?city=${city}`
+        );
         return true;
     } catch (error) {
-        return false;
+        if (error.response && error.response.status === 404) {
+            return false;
+        } else {
+            console.error('Error validating city:', error);
+            return false;
+        }
     }
 };
+
+export default validateCity;

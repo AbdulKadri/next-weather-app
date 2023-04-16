@@ -7,18 +7,13 @@ const CitySearch = ({ onError, className }) => {
     const [city, setCity] = useState('');
     const router = useRouter();
 
-    const url = `${process.env.NEXT_PUBLIC_WEATHER_URL}${city}&appid=${process.env.NEXT_PUBLIC_WEATHER_API_KEY}&units=metric`;
-
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         const isValidCity = await validateCity(city);
 
         if (isValidCity) {
-            router.push({
-                pathname: `/${city}`,
-                query: { url },
-            });
+            router.push(`/${city}`);
             setCity('');
             if (onError) {
                 onError(false);

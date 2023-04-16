@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export default async function handler(req, res) {
+const getImageData = async (req, res) => {
     const { city } = req.query;
 
     try {
@@ -19,3 +19,5 @@ export default async function handler(req, res) {
         res.status(500).json({ message: 'An error occurred' });
     }
 }
+
+export default getImageData;

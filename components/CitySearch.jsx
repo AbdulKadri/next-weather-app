@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { FaSearch } from 'react-icons/fa';
 import { useRouter } from 'next/router';
-import { validateCity } from '../utils/ValidateCity';
+import validateCity from '../utils/ValidateCity';
 
 const CitySearch = ({ onError, className }) => {
     const [city, setCity] = useState('');

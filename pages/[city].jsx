@@ -5,8 +5,9 @@ import axios from "axios"
 import { countries } from 'country-data'
 import Image from 'next/image';
 
-const CityPage = ({ data, cityImageUrl }) => {
-    const [cityName, setCityName] = useState(data.name);
+const CityPage = ({ currentWeatherData, cityImageUrl }) => {
+    const [title, setTitle] = useState('');
+    const [cityName, setCityName] = useState('');
     const [currentTime, setCurrentTime] = useState('');
     const [currentDate, setCurrentDate] = useState('');
     const [currentTemp, setCurrentTemp] = useState('');
@@ -16,12 +17,13 @@ const CityPage = ({ data, cityImageUrl }) => {
     const [cityImage, setCityImage] = useState(cityImageUrl);
 
     useEffect(() => {
-        if (data) {
+        if (currentWeatherData) {
             // Get the city name
-            setCityName(data.name);
+            setCityName(currentWeatherData.name);
+            setTitle(`Apex Weather | ${currentWeatherData.name}`);
 
             // Get the current date & time in the location
-            const timezoneOffset = data.timezone;
+            const timezoneOffset = currentWeatherData.timezone;
             const localTimeOffset = new Date().getTimezoneOffset() * 60;
             const currentTimeInMilliseconds = new Date().getTime();
             const currentTimeInLocation = new Date(currentTimeInMilliseconds + (timezoneOffset + localTimeOffset) * 1000);
@@ -31,7 +33,7 @@ const CityPage = ({ data, cityImageUrl }) => {
                 hour12: true
             }));
 
-            const currentDateInMilliseconds = data.dt * 1000;
+            const currentDateInMilliseconds = currentWeatherData.dt * 1000;
             const currentDateInLocation = new Date(currentDateInMilliseconds + (timezoneOffset + localTimeOffset) * 1000);
             setCurrentDate(currentDateInLocation.toLocaleDateString("en-US", {
                 month: "long",
@@ -40,30 +42,30 @@ const CityPage = ({ data, cityImageUrl }) => {
             }));
 
             // Round the temperature to the nearest whole number
-            setCurrentTemp(Math.round(data.main.temp));
-            setCurrentFeelsLike(Math.round(data.main.feels_like));
+            setCurrentTemp(Math.round(currentWeatherData.main.temp));
+            setCurrentFeelsLike(Math.round(currentWeatherData.main.feels_like));
 
             // convert the country code to the country name
-            setCountryCode(data.sys.country);
-            setCountryName(countries[data.sys.country].name);
+            setCountryCode(currentWeatherData.sys.country);
+            setCountryName(countries[currentWeatherData.sys.country].name);
 
 
             setCityImage(cityImageUrl);
         }
-    }, [data]);
+    }, [currentWeatherData]);
 
 
 
     return (
         <div className='min-h-screen'>
             <Head>
-                <title>Apex Weather | {cityName}</title>
+                <title>{title}</title>
             </Head>
             <Navbar />
-            {data && (
+            {currentWeatherData && (
                 <div className='flex w-full h-[90vh]'>
                     <div className='basis-1/2'>
-                        <Image src={cityImage} alt='city image' width={1920} height={1080} className='w-full h-full' />
+                        <Image src={cityImage} alt='city image' width={1920} height={1080} className='w-full h-full' priority={true} />
                     </div>
                     <div className='basis-1/2 flex flex-col w-full items-center bg-black/80 text-white'>
                         <div className='m-5'>
@@ -71,11 +73,11 @@ const CityPage = ({ data, cityImageUrl }) => {
                             <p className="text-center text-red-400">At {currentDate}, {currentTime}</p>
                         </div>
                         <div className="flex items-center">
-                            <img src={`http://openweathermap.org/img/w/${data.weather[0].icon}.png`} width={100} height={100} className="" />
+                            <img src={`http://openweathermap.org/img/w/${currentWeatherData.weather[0].icon}.png`} width={100} height={100} className="" />
                             <p className="text-center text-5xl">{currentTemp}<span>&#176;C</span></p>
                         </div>
                         <p className="text-center mb-2">
-                            {data.weather[0].description}
+                            {currentWeatherData.weather[0].description}
                         </p>
                         <p className="text-center">Feels Like: {currentFeelsLike}<span>&#176;C</span></p>
                     </div>
@@ -86,18 +88,21 @@ const CityPage = ({ data, cityImageUrl }) => {
 }
 
 export async function getServerSideProps(context) {
-    const { params } = context;
-    const cityName = params.city;
+    const { query } = context;
+    const { lat, lon } = query;
 
     try {
-        const weatherResponse = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/weather?city=${cityName}`);
-        const data = weatherResponse.data;
+        const currentWeatherResponse = await axios.get(`${process.env.NEXT_PUBLIC_WEATHER_URL}/weather?lat=${lat}&lon=${lon}&appid=${process.env.WEATHER_API_KEY}&units=metric`);
+        const currentWeatherData = currentWeatherResponse.data;
 
-        const unsplashResponse = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/unsplash?city=${data.name}`);
+        const forecastResponse = await axios.get(`${process.env.NEXT_PUBLIC_WEATHER_URL}/forecast?lat=${lat}&lon=${lon}&appid=${process.env.WEATHER_API_KEY}&units=metric`);
+        const forecastData = forecastResponse.data;
+
+        const unsplashResponse = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/unsplash?city=${currentWeatherData.name}`);
         const cityImageUrl = unsplashResponse.data.cityImageUrl;
 
         return {
-            props: { data, cityImageUrl },
+            props: { currentWeatherData, forecastData, cityImageUrl },
         };
     } catch (error) {
         console.error('Error in getServerSideProps:', error);

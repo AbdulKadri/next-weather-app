@@ -1,38 +1,53 @@
-import { useState } from 'react';
-import { FaSearch } from 'react-icons/fa';
+import { useState, useId } from 'react';
 import { useRouter } from 'next/router';
-import validateCity from '../utils/ValidateCity';
+import axios from 'axios';
+import { AsyncPaginate } from 'react-select-async-paginate';
+import { geoApiOptions, GEO_API_URL } from '@/pages/api/geoDbCities';
 
-const CitySearch = ({ onError, className }) => {
-    const [city, setCity] = useState('');
+const CitySearch = ({ onError, onSearchChange, className }) => {
+    const [search, setSearch] = useState(null);
     const router = useRouter();
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+    const handleOnChange = (searchData) => {
+        setSearch(searchData);
+        const [lat, lon] = searchData.value.split(' ');
 
-        const isValidCity = await validateCity(city);
+        router.push(`/${searchData.label}?lat=${lat}&lon=${lon}`);
+    };
 
-        if (isValidCity) {
-            router.push(`/${city}`);
-            setCity('');
-            if (onError) {
+    const loadOptions = async (inputValue) => {
+        return axios.request(`${GEO_API_URL}/cities?minPopulation=100000&namePrefix=${inputValue}`, geoApiOptions)
+            .then(function (response) {
                 onError(false);
-            }
-        } else {
-            if (onError) {
+                return {
+                    options: response.data.data.map((city) => {
+                        return {
+                            value: `${city.latitude} ${city.longitude}`,
+                            label: `${city.name}, ${city.countryCode}`
+                        }
+                    })
+                }
+            })
+            .catch(function (err) {
                 onError(true);
-            }
-        }
+                console.error(err)
+                return {
+                    options: []
+                };
+            });
     };
 
     return (
-        <form onSubmit={handleSubmit} className={`${className} flex bg-white rounded-full mt-2`}>
-            <button className="h-10 p-2 my-2 ml-2 bg-gray-400 rounded-full hover:bg-gray-500">
-                <FaSearch color="#68EDC6" className="h-6 w-6" />
-            </button>
-            <input type="search" value={city} onChange={(e) => setCity(e.target.value)} placeholder="Enter a city name"
-                className="h-10 w-full p-2.5 my-2 mr-2 outline-none overflow-hidden text-xl rounded-md" />
-        </form>
+        <div className={`${className}`}>
+            <AsyncPaginate
+                instanceId={useId()}
+                placeholder="Search a city..."
+                value={search}
+                debounceTimeout={600}
+                onChange={handleOnChange}
+                loadOptions={loadOptions}
+            />
+        </div>
     )
 }
 

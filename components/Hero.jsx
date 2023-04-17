@@ -19,13 +19,13 @@ const Hero = () => {
                     <h1 className="text-5xl text-white w-4/5 text-center">
                         Curious About your city?
                     </h1>
-                    <p className="text-2xl text-white w-4/5 text-center">Discover the current Weather, Air Pollution index & more in your city</p>
+                    <p className="text-2xl text-white w-4/5 text-center">Discover the current Weather, Air Pollution index & more</p>
 
                     <div className="flex flex-col items-center gap-1 w-2/5">
                         <CitySearch onError={handleError} className="w-full" />
                         {error && (
                             <p className="text-red-600 p-1 text-lg w-fit bg-gray-400 rounded-md">
-                                Please enter a valid city name.
+                                Something went wrong please try again
                             </p>
                         )}
                     </div>

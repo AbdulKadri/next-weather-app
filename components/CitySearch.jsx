@@ -4,7 +4,7 @@ import axios from 'axios';
 import { AsyncPaginate } from 'react-select-async-paginate';
 import { geoApiOptions, GEO_API_URL } from '@/pages/api/geoDbCities';
 
-const CitySearch = ({ onError, onSearchChange, className }) => {
+const CitySearch = ({ onError, className }) => {
     const [search, setSearch] = useState(null);
     const router = useRouter();
 

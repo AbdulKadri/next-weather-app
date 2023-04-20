@@ -7,10 +7,20 @@ import Forecast from '@/components/Forecast';
 
 const CityPage = ({ currentWeatherData, forecastData, cityImageUrl }) => {
     const [title, setTitle] = useState('');
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         setTitle(`Apex Weather | ${currentWeatherData.name}`);
+        setLoading(false);
     }, [currentWeatherData]);
+
+    if (loading) {
+        return (
+            <div className="flex justify-center items-center bg-black/80 h-screen text-white text-3xl">
+                Loading...
+            </div>
+        )
+    }
 
     return (
         <div>
@@ -18,13 +28,11 @@ const CityPage = ({ currentWeatherData, forecastData, cityImageUrl }) => {
                 <title>{title}</title>
             </Head>
             <Navbar />
-            <div className='flex w-full h-full'>
-                <div className='basis-1/2'>
-                    {currentWeatherData && (<CurrentWeather data={currentWeatherData} cityImageUrl={cityImageUrl} />)}
-                </div>
-                <div className='basis-1/2 bg-black/80'>
-                    {forecastData && (<Forecast data={forecastData} />)}
-                </div>
+            <div>
+                {currentWeatherData && (<CurrentWeather data={currentWeatherData} cityImageUrl={cityImageUrl} />)}
+            </div>
+            <div className='flex justify-center'>
+                {forecastData && (<Forecast data={forecastData} />)}
             </div>
         </div>
     );

@@ -11,6 +11,8 @@ const CurrentWeather = ({ data, cityImageUrl }) => {
     const [countryName, setCountryName] = useState('');
     const [countryCode, setCountryCode] = useState('');
     const [cityImage, setCityImage] = useState(cityImageUrl);
+    const [sunrise, setSunrise] = useState('');
+    const [sunset, setSunset] = useState('');
 
     useEffect(() => {
         if (data) {
@@ -44,8 +46,25 @@ const CurrentWeather = ({ data, cityImageUrl }) => {
             setCountryCode(data.sys.country);
             setCountryName(countries[data.sys.country].name);
 
-
+            // get city image
             setCityImage(cityImageUrl);
+
+            // get sunrise and sunset time
+            const sunriseInMilliseconds = data.sys.sunrise * 1000;
+            const sunriseInLocation = new Date(sunriseInMilliseconds + (timezoneOffset + localTimeOffset) * 1000);
+            setSunrise(sunriseInLocation.toLocaleTimeString("en-US", {
+                hour: "numeric",
+                minute: "numeric",
+                hour12: true
+            }));
+
+            const sunsetInMilliseconds = data.sys.sunset * 1000;
+            const sunsetInLocation = new Date(sunsetInMilliseconds + (timezoneOffset + localTimeOffset) * 1000);
+            setSunset(sunsetInLocation.toLocaleTimeString("en-US", {
+                hour: "numeric",
+                minute: "numeric",
+                hour12: true
+            }));
         }
     }, [data]);
 
@@ -66,7 +85,12 @@ const CurrentWeather = ({ data, cityImageUrl }) => {
                 <p className="text-center mb-2">
                     {data.weather[0].description}
                 </p>
-                <p className="text-center">Feels Like: {currentFeelsLike}<span>&#176;C</span></p>
+                <p className="text-3xl text-center">Feels Like: {currentFeelsLike}<span>&#176;C</span></p>
+
+                <div className='text-3xl m-2'>
+                    <p>Sunrise: {sunrise}</p>
+                    <p>Sunset: {sunset}</p>
+                </div>
             </div>
         </div>
     )

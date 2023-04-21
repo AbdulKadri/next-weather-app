@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { countries } from 'country-data';
 import Image from 'next/image';
 
-const CurrentWeather = ({ data, cityImageUrl }) => {
+const CurrentWeather = ({ data, cityImageUrl, cityImageUsernameData }) => {
     const [cityName, setCityName] = useState('');
     const [currentTime, setCurrentTime] = useState('');
     const [currentDate, setCurrentDate] = useState('');
@@ -11,6 +11,7 @@ const CurrentWeather = ({ data, cityImageUrl }) => {
     const [countryName, setCountryName] = useState('');
     const [countryCode, setCountryCode] = useState('');
     const [cityImage, setCityImage] = useState(cityImageUrl);
+    const [cityImageUsername, setCityImageUsername] = useState(cityImageUsernameData);
     const [sunrise, setSunrise] = useState('');
     const [sunset, setSunset] = useState('');
 
@@ -46,8 +47,9 @@ const CurrentWeather = ({ data, cityImageUrl }) => {
             setCountryCode(data.sys.country);
             setCountryName(countries[data.sys.country].name);
 
-            // get city image
+            // get city image and user
             setCityImage(cityImageUrl);
+            setCityImageUsername(cityImageUsernameData)
 
             // get sunrise and sunset time
             const sunriseInMilliseconds = data.sys.sunrise * 1000;
@@ -66,12 +68,20 @@ const CurrentWeather = ({ data, cityImageUrl }) => {
                 hour12: true
             }));
         }
-    }, [data]);
+    }, [data, cityImageUrl, cityImageUsernameData]);
 
     return (
-        <div className='flex w-full'>
+        <div className='flex w-full h-[90vh] relative'>
             <div className='basis-1/2'>
-                <Image src={cityImage} alt='city image' width={1920} height={1080} className='w-full h-full' priority={true} />
+                <Image src={cityImage} alt='city image'
+                    width={1920} height={1080}
+                    className='w-full h-full'
+                    priority={true} />
+                <p className='absolute bottom-0 left-0 text-white font-bold p-3'>
+                    Photo by
+                    {' '}
+                    <a href={`http://unsplash.com/${cityImageUsername}`} target='_blank' rel="noopener noreferrer"><u>{cityImageUsername}</u></a>
+                </p>
             </div>
             <div className='basis-1/2 flex flex-col w-full items-center bg-black/80 text-white'>
                 <div className='m-5'>

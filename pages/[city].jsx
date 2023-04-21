@@ -5,7 +5,7 @@ import axios from "axios"
 import CurrentWeather from '@/components/currentWeather';
 import Forecast from '@/components/Forecast';
 
-const CityPage = ({ currentWeatherData, forecastData, cityImageUrl }) => {
+const CityPage = ({ currentWeatherData, forecastData, cityImageUrl, cityImageUsernameData }) => {
     const [title, setTitle] = useState('');
     const [loading, setLoading] = useState(true);
 
@@ -27,12 +27,16 @@ const CityPage = ({ currentWeatherData, forecastData, cityImageUrl }) => {
             <Head>
                 <title>{title}</title>
             </Head>
-            <Navbar />
+            <div className='h-[10vh]'>
+                <Navbar />
+            </div>
             <div>
-                {currentWeatherData && (<CurrentWeather data={currentWeatherData} cityImageUrl={cityImageUrl} />)}
+                {currentWeatherData &&
+                    (<CurrentWeather data={currentWeatherData} cityImageUrl={cityImageUrl} cityImageUsernameData={cityImageUsernameData} />)}
             </div>
             <div className='flex justify-center'>
-                {forecastData && (<Forecast data={forecastData} />)}
+                {forecastData &&
+                    (<Forecast data={forecastData} />)}
             </div>
         </div>
     );
@@ -51,9 +55,10 @@ export async function getServerSideProps(context) {
 
         const unsplashResponse = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/unsplash?city=${currentWeatherData.name}`);
         const cityImageUrl = unsplashResponse.data.cityImageUrl;
+        const cityImageUsernameData = unsplashResponse.data.cityImageUser;
 
         return {
-            props: { currentWeatherData, forecastData, cityImageUrl },
+            props: { currentWeatherData, forecastData, cityImageUrl, cityImageUsernameData },
         };
     } catch (error) {
         console.error('Error in getServerSideProps:', error);

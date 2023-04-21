@@ -4,23 +4,18 @@ import Navbar from '../components/Navbar'
 import axios from "axios"
 import CurrentWeather from '@/components/currentWeather';
 import Forecast from '@/components/Forecast';
+import Loading from '@/components/Loading';
 
 const CityPage = ({ currentWeatherData, forecastData, cityImageUrl, cityImageUsernameData }) => {
     const [title, setTitle] = useState('');
-    const [loading, setLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         setTitle(`Apex Weather | ${currentWeatherData.name}`);
-        setLoading(false);
+        setIsLoading(false);
     }, [currentWeatherData]);
 
-    if (loading) {
-        return (
-            <div className="flex justify-center items-center bg-black/80 h-screen text-white text-3xl">
-                Loading...
-            </div>
-        )
-    }
+    if (isLoading) return (<Loading />);
 
     return (
         <div>
@@ -46,9 +41,27 @@ export async function getServerSideProps(context) {
     const { query } = context;
     const { lat, lon } = query;
 
+    // Used to get current location weather data
+    const getCityName = async (latitude, longitude) => {
+        try {
+            const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&zoom=10&addressdetails=1`);
+            const data = await response.json();
+            return data.address.city || data.address.town || data.address.village;
+        } catch (error) {
+            console.error('Error fetching city name:', error);
+            return null;
+        }
+    };
+
     try {
         const currentWeatherResponse = await axios.get(`${process.env.NEXT_PUBLIC_WEATHER_URL}/weather?lat=${lat}&lon=${lon}&appid=${process.env.WEATHER_API_KEY}&units=metric`);
         const currentWeatherData = currentWeatherResponse.data;
+
+        // Get city name from Nominatim API
+        const cityName = await getCityName(lat, lon);
+        if (cityName) {
+            currentWeatherData.name = cityName;
+        }
 
         const forecastResponse = await axios.get(`${process.env.NEXT_PUBLIC_WEATHER_URL}/forecast?lat=${lat}&lon=${lon}&appid=${process.env.WEATHER_API_KEY}&units=metric`);
         const forecastData = forecastResponse.data;
@@ -67,5 +80,6 @@ export async function getServerSideProps(context) {
         };
     }
 }
+
 
 export default CityPage

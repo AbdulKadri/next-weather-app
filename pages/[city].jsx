@@ -17,6 +17,7 @@ const CityPage = ({ currentWeatherData, forecastData, cityImageUrl, cityImageUse
 
     if (isLoading) return (<Loading />);
 
+
     return (
         <div>
             <Head>
@@ -54,17 +55,15 @@ export async function getServerSideProps(context) {
     };
 
     try {
-        const currentWeatherResponse = await axios.get(`${process.env.NEXT_PUBLIC_WEATHER_URL}/weather?lat=${lat}&lon=${lon}&appid=${process.env.WEATHER_API_KEY}&units=metric`);
-        const currentWeatherData = currentWeatherResponse.data;
+        const weatherDataResponse = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/weather?lat=${lat}&lon=${lon}`);
+        const currentWeatherData = weatherDataResponse.data.currentWeatherData;
+        const forecastData = weatherDataResponse.data.forecastData;
 
         // Get city name from Nominatim API
         const cityName = await getCityName(lat, lon);
         if (cityName) {
             currentWeatherData.name = cityName;
         }
-
-        const forecastResponse = await axios.get(`${process.env.NEXT_PUBLIC_WEATHER_URL}/forecast?lat=${lat}&lon=${lon}&appid=${process.env.WEATHER_API_KEY}&units=metric`);
-        const forecastData = forecastResponse.data;
 
         const unsplashResponse = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/unsplash?city=${currentWeatherData.name}`);
         const cityImageUrl = unsplashResponse.data.cityImageUrl;

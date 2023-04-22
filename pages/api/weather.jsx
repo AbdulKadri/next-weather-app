@@ -1,21 +1,24 @@
+// pages/api/getWeatherData.js
 import axios from 'axios';
 
 const getWeatherData = async (req, res) => {
-    const { city } = req.query;
+    const { lat, lon } = req.query;
 
     try {
-        const response = await axios.get(`${process.env.WEATHER_URL}${city}&appid=${process.env.WEATHER_API_KEY}&units=metric`);
-        const weatherData = response.data;
+        const currentWeatherResponse = await axios.get(`${process.env.NEXT_PUBLIC_WEATHER_URL}/weather?lat=${lat}&lon=${lon}&appid=${process.env.WEATHER_API_KEY}&units=metric`);
+        const currentWeatherData = currentWeatherResponse.data;
 
-        if (!weatherData || !weatherData.name) {
+        const forecastResponse = await axios.get(`${process.env.NEXT_PUBLIC_WEATHER_URL}/forecast?lat=${lat}&lon=${lon}&appid=${process.env.WEATHER_API_KEY}&units=metric`);
+        const forecastData = forecastResponse.data;
+
+        if (!currentWeatherData || !forecastData) {
             res.status(404).json({ message: 'Weather data not found' });
             return;
         }
 
-        res.status(200).json(weatherData);
+        res.status(200).json({ currentWeatherData, forecastData });
     } catch (error) {
         console.error(error);
-        // Check for 404 status, which means the city was not found
         if (error.response && error.response.status === 404) {
             res.status(404).json({ message: 'Weather data not found' });
         } else {

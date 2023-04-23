@@ -6,6 +6,7 @@ import CurrentWeather from '@/components/currentWeather';
 import Forecast from '@/components/Forecast';
 import Loading from '@/components/Loading';
 
+
 const CityPage = ({ currentWeatherData, forecastData, cityImageUrl, cityImageUsernameData }) => {
     const [title, setTitle] = useState('');
     const [isLoading, setIsLoading] = useState(true);
@@ -74,6 +75,15 @@ export async function getServerSideProps(context) {
         };
     } catch (error) {
         console.error('Error in getServerSideProps:', error);
+
+        if (error.code === 'ETIMEDOUT') {
+            return {
+                props: {
+                    errorMessage: 'Request to Nominatim API timed out. Please try again later.',
+                },
+            };
+        }
+
         return {
             notFound: true,
         };

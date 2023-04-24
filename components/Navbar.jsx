@@ -11,7 +11,7 @@ const Nav = () => {
     };
 
     return (
-        <nav className="w-full flex justify-center sticky top-0 bg-gray-400 z-10">
+        <nav className="w-full flex justify-center bg-gray-400 z-10 border-b-2 border-solid border-primary">
             <div className="w-4/5 flex justify-between items-center">
                 <Link href={'/'} >
                     <Image src={'/Apex-Weather-Logo.svg'} alt={'Apex Weather logo'} width={150} height={150} />

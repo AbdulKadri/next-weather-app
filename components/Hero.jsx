@@ -3,7 +3,6 @@ import { FaMapPin } from 'react-icons/fa'
 import CitySearch from '../components/CitySearch'
 import { useRouter } from 'next/router'
 import Loading from '../components/Loading'
-import { getCityName } from '../utils/getCityName';
 
 const Hero = () => {
     const [error, setError] = useState(false);
@@ -31,16 +30,16 @@ const Hero = () => {
         }
     };
 
-    // const getCityName = async (latitude, longitude) => {
-    //     try {
-    //         const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&zoom=10&addressdetails=1`);
-    //         const data = await response.json();
-    //         return data.address.city || data.address.town || data.address.village;
-    //     } catch (error) {
-    //         console.error('Error fetching city name:', error);
-    //         return null;
-    //     }
-    // };
+    const getCityName = async (latitude, longitude) => {
+        try {
+            const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&zoom=10&addressdetails=1`);
+            const data = await response.json();
+            return data.address.city || data.address.town || data.address.village;
+        } catch (error) {
+            console.error('Error fetching city name:', error);
+            return null;
+        }
+    };
 
     if (isLoading) return (<Loading />);
 

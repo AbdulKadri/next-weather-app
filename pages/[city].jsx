@@ -24,7 +24,7 @@ const CityPage = ({ currentWeatherData, forecastData, cityImageUrl, cityImageUse
             <Head>
                 <title>{title}</title>
             </Head>
-            <div className='h-[10vh]'>
+            <div className='h-full'>
                 <Navbar />
             </div>
             <div>

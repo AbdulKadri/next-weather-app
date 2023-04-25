@@ -2,14 +2,14 @@
 import axios from 'axios';
 
 const getWeatherData = async (req, res) => {
-    const { lat, lon } = req.query;
+    const { lat, lon, unit } = req.query;
 
     try {
-        const currentWeatherResponse = await axios.get(`${process.env.NEXT_PUBLIC_WEATHER_URL}/weather?lat=${lat}&lon=${lon}&appid=${process.env.WEATHER_API_KEY}&units=metric`);
+        const currentWeatherResponse = await axios.get(`${process.env.NEXT_PUBLIC_WEATHER_URL}/weather?lat=${lat}&lon=${lon}&appid=${process.env.WEATHER_API_KEY}&units=${unit}`);
         const currentWeatherData = currentWeatherResponse.data;
 
         // const forecastResponse = await axios.get(`${process.env.WEATHER_URL}/forecast?lat=${lat}&lon=${lon}&appid=${process.env.WEATHER_API_KEY}&units=metric`);
-        const forecastResponse = await axios.get(`https://pro.openweathermap.org/data/2.5/forecast/climate?lat=${lat}&lon=${lon}&appid=${process.env.WEATHER_API_KEY}&units=metric`)
+        const forecastResponse = await axios.get(`https://pro.openweathermap.org/data/2.5/forecast/climate?lat=${lat}&lon=${lon}&appid=${process.env.WEATHER_API_KEY}&units=${unit}`);
         const forecastData = forecastResponse.data;
 
         if (!currentWeatherData || !forecastData) {

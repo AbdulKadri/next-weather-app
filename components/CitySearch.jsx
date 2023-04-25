@@ -37,6 +37,13 @@ const CitySearch = ({ onError, className }) => {
             });
     };
 
+    const customStyles = {
+        singleValue: (base) => ({
+            ...base,
+            paddingBottom: '2px',
+        }),
+    };
+
     return (
         <div className={`${className}`}>
             <AsyncPaginate
@@ -46,6 +53,7 @@ const CitySearch = ({ onError, className }) => {
                 debounceTimeout={600}
                 onChange={handleOnChange}
                 loadOptions={loadOptions}
+                styles={customStyles}
             />
         </div>
     )

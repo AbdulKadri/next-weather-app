@@ -46,9 +46,8 @@ export async function getServerSideProps(context) {
     // Used to get current location weather data
     const getCityName = async (latitude, longitude) => {
         try {
-            const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&zoom=10&addressdetails=1`);
-            const data = await response.json();
-            return data.address.city || data.address.town || data.address.village;
+            const response = await axios.get(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&zoom=10&addressdetails=1&accept-language=en`);
+            return response.data.address.city || response.data.address.town || response.data.address.village;
         } catch (error) {
             console.error('Error fetching city name:', error);
             return null;

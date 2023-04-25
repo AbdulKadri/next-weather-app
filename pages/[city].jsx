@@ -4,36 +4,54 @@ import Navbar from '../components/Navbar'
 import axios from "axios"
 import CurrentWeather from '@/components/currentWeather';
 import Forecast from '@/components/Forecast';
+import { useRouter } from 'next/router';
 import Loading from '@/components/Loading';
-
 
 const CityPage = ({ currentWeatherData, forecastData, cityImageUrl, cityImageUsernameData }) => {
     const [title, setTitle] = useState('');
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
+    const [unit, setUnit] = useState('metric');
+
+    const router = useRouter();
 
     useEffect(() => {
         setTitle(`Apex Weather | ${currentWeatherData.name}`);
         setIsLoading(false);
     }, [currentWeatherData]);
 
-    if (isLoading) return (<Loading />);
-
+    if (isLoading) return <Loading />;
 
     return (
-        <div>
+        <div className='relative'>
             <Head>
                 <title>{title}</title>
             </Head>
             <div className='h-full'>
-                <Navbar />
+                <Navbar setIsLoading={setIsLoading} />
             </div>
+            <button
+                className="absolute top-9 left-1/2 transform -translate-x-1/2 bg-primary text-white font-bold py-1 px-4 rounded mb-4"
+                onClick={() => {
+                    const newUnit = unit === 'metric' ? 'imperial' : 'metric';
+                    const lat = currentWeatherData.coord.lat;
+                    const lon = currentWeatherData.coord.lon;
+                    setUnit(newUnit);
+                    router.push({
+                        pathname: '/city',
+                        query: { lat, lon, unit: newUnit },
+                    });
+                }}
+            >
+                Switch to {unit === 'metric' ? 'Fahrenheit' : 'Celsius'}
+            </button>
+
             <div>
                 {currentWeatherData &&
-                    (<CurrentWeather data={currentWeatherData} cityImageUrl={cityImageUrl} cityImageUsernameData={cityImageUsernameData} />)}
+                    (<CurrentWeather data={currentWeatherData} cityImageUrl={cityImageUrl} cityImageUsernameData={cityImageUsernameData} unit={unit} />)}
             </div>
             <div className='flex justify-center'>
                 {forecastData &&
-                    (<Forecast data={forecastData} />)}
+                    (<Forecast data={forecastData} unit={unit} />)}
             </div>
         </div>
     );
@@ -41,7 +59,7 @@ const CityPage = ({ currentWeatherData, forecastData, cityImageUrl, cityImageUse
 
 export async function getServerSideProps(context) {
     const { query } = context;
-    const { lat, lon } = query;
+    const { lat, lon, unit = 'metric' } = query;
 
     // Used to get current location weather data
     const getCityName = async (latitude, longitude) => {
@@ -55,7 +73,7 @@ export async function getServerSideProps(context) {
     };
 
     try {
-        const weatherDataResponse = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/weather?lat=${lat}&lon=${lon}`);
+        const weatherDataResponse = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/weather?lat=${lat}&lon=${lon}&unit=${unit}`);
         const currentWeatherData = weatherDataResponse.data.currentWeatherData;
         const forecastData = weatherDataResponse.data.forecastData;
 

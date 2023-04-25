@@ -3,7 +3,7 @@ import CitySearch from "./CitySearch"
 import Link from "next/link"
 import Image from 'next/image';
 
-const Nav = () => {
+const Nav = ({ setIsLoading }) => {
     const [error, setError] = useState(false);
 
     const handleError = (hasError) => {
@@ -18,7 +18,7 @@ const Nav = () => {
                 </Link>
                 <div className="flex justify-end">
                     <div className="flex flex-col gap-1">
-                        <CitySearch onError={handleError} className="w-[20rem]" />
+                        <CitySearch onError={handleError} setIsLoading={setIsLoading} className="w-[20rem]" />
                         {error && (
                             <div className="text-red-600 text-lg text-center">
                                 Please enter a valid city name.

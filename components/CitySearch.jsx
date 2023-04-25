@@ -4,15 +4,17 @@ import axios from 'axios';
 import { AsyncPaginate } from 'react-select-async-paginate';
 import { geoApiOptions, GEO_API_URL } from '@/pages/api/geoDbCities';
 
-const CitySearch = ({ onError, className }) => {
+const CitySearch = ({ onError, setIsLoading, className }) => {
     const [search, setSearch] = useState(null);
     const router = useRouter();
 
-    const handleOnChange = (searchData) => {
+    const handleOnChange = async (searchData) => {
         setSearch(searchData);
         const [lat, lon] = searchData.value.split(' ');
 
-        router.push(`/${searchData.label}?lat=${lat}&lon=${lon}`);
+        setIsLoading(true); // Set loading to true before routing
+        await router.push(`/${searchData.label}?lat=${lat}&lon=${lon}`);
+        setIsLoading(false); // Set loading to false after routing
     };
 
     const loadOptions = async (inputValue) => {

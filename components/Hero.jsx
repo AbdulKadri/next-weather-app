@@ -55,7 +55,7 @@ const Hero = () => {
                     <p className="text-2xl text-white w-4/5 text-center">Discover the current Weather, Air Pollution index & more</p>
 
                     <div className="flex flex-col items-center gap-1 w-2/5">
-                        <CitySearch onError={handleError} className="w-full" />
+                        <CitySearch onError={handleError} setIsLoading={setIsLoading} className="w-full" />
                         {error && (
                             <p className="text-red-600 p-1 text-lg w-fit bg-gray-400 rounded-md">
                                 Something went wrong please try again

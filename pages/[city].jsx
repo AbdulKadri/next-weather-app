@@ -6,8 +6,9 @@ import CurrentWeather from '@/components/currentWeather';
 import Forecast from '@/components/Forecast';
 import { useRouter } from 'next/router';
 import Loading from '@/components/Loading';
+import AirQuality from '@/components/AirQuality';
 
-const CityPage = ({ currentWeatherData, forecastData, cityImageUrl, cityImageUsernameData }) => {
+const CityPage = ({ currentWeatherData, forecastData, airQualityData, cityImageUrl, cityImageUsernameData }) => {
     const [title, setTitle] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [unit, setUnit] = useState('metric');
@@ -30,7 +31,7 @@ const CityPage = ({ currentWeatherData, forecastData, cityImageUrl, cityImageUse
                 <Navbar setIsLoading={setIsLoading} />
             </div>
             <button
-                className="absolute top-9 left-1/2 transform -translate-x-1/2 bg-primary text-white font-bold py-1 px-4 rounded mb-4"
+                className="absolute top-9 left-1/2 transform -translate-x-1/2 bg-primary text-black/80 font-bold py-1 px-4 rounded mb-4"
                 onClick={() => {
                     const newUnit = unit === 'metric' ? 'imperial' : 'metric';
                     const lat = currentWeatherData.coord.lat;
@@ -45,13 +46,18 @@ const CityPage = ({ currentWeatherData, forecastData, cityImageUrl, cityImageUse
                 Switch to {unit === 'metric' ? 'Fahrenheit' : 'Celsius'}
             </button>
 
-            <div>
+            <div className='flex justify-center bg-black/80 py-5'>
                 {currentWeatherData &&
                     (<CurrentWeather data={currentWeatherData} cityImageUrl={cityImageUrl} cityImageUsernameData={cityImageUsernameData} unit={unit} />)}
             </div>
-            <div className='flex justify-center'>
+            <div className='flex justify-center bg-black/80'>
                 {forecastData &&
                     (<Forecast data={forecastData} unit={unit} />)}
+            </div>
+            <div className='flex justify-center bg-black/80'>
+                {airQualityData && (
+                    <AirQuality data={airQualityData} cityName={currentWeatherData.name} />
+                )}
             </div>
         </div>
     );
@@ -76,6 +82,7 @@ export async function getServerSideProps(context) {
         const weatherDataResponse = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/weather?lat=${lat}&lon=${lon}&unit=${unit}`);
         const currentWeatherData = weatherDataResponse.data.currentWeatherData;
         const forecastData = weatherDataResponse.data.forecastData;
+        const airQualityData = weatherDataResponse.data.airQualityData;
 
         // Get city name from Nominatim API
         const cityName = await getCityName(lat, lon);
@@ -88,7 +95,7 @@ export async function getServerSideProps(context) {
         const cityImageUsernameData = unsplashResponse.data.cityImageUser;
 
         return {
-            props: { currentWeatherData, forecastData, cityImageUrl, cityImageUsernameData },
+            props: { currentWeatherData, forecastData, airQualityData, cityImageUrl, cityImageUsernameData },
         };
     } catch (error) {
         console.error('Error in getServerSideProps:', error);

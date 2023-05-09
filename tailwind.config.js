@@ -19,7 +19,7 @@ module.exports = {
       colors: {
         'primary': '#68EDC6',
         'secondary': '#90F3FF',
-        'background': '#C4BBAF',
+        'background': 'rgba(0, 0, 0, 0.8)',
       }
     },
   },

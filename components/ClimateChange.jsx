@@ -1,6 +1,6 @@
 const ClimateChange = () => {
     return (
-        <div className="min-h-screen bg-slate-400">
+        <div className="min-h-screen bg-background text-white">
             <h2 className="pt-4 text-5xl text-center">Climate Change</h2>
 
             <div className="mt-16 flex flex-col justify-around">

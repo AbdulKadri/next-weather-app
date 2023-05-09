@@ -31,7 +31,7 @@ const CityPage = ({ currentWeatherData, forecastData, airQualityData, cityImageU
                 <Navbar setIsLoading={setIsLoading} />
             </div>
             <button
-                className="absolute top-9 left-1/2 transform -translate-x-1/2 bg-primary text-black/80 font-bold py-1 px-4 rounded mb-4"
+                className="absolute top-9 left-1/2 transform -translate-x-1/2 bg-primary text-background font-bold py-1 px-4 rounded mb-4"
                 onClick={() => {
                     const newUnit = unit === 'metric' ? 'imperial' : 'metric';
                     const lat = currentWeatherData.coord.lat;
@@ -46,15 +46,15 @@ const CityPage = ({ currentWeatherData, forecastData, airQualityData, cityImageU
                 Switch to {unit === 'metric' ? 'Fahrenheit' : 'Celsius'}
             </button>
 
-            <div className='flex justify-center bg-black/80 py-5'>
+            <div className='flex justify-center bg-background py-5'>
                 {currentWeatherData &&
                     (<CurrentWeather data={currentWeatherData} cityImageUrl={cityImageUrl} cityImageUsernameData={cityImageUsernameData} unit={unit} />)}
             </div>
-            <div className='flex justify-center bg-black/80'>
+            <div className='flex justify-center bg-background'>
                 {forecastData &&
                     (<Forecast data={forecastData} unit={unit} />)}
             </div>
-            <div className='flex justify-center bg-black/80'>
+            <div className='flex justify-center bg-background'>
                 {airQualityData && (
                     <AirQuality data={airQualityData} cityName={currentWeatherData.name} />
                 )}

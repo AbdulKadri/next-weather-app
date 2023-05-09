@@ -52,9 +52,9 @@ const Hero = () => {
                     <h1 className="text-5xl text-white w-4/5 text-center">
                         Curious About your city?
                     </h1>
-                    <p className="text-2xl text-white w-4/5 text-center">Discover the current Weather, Air Pollution index & more</p>
+                    <p className="text-2xl text-white w-4/5 text-center py-3">Discover the Current Weather, Weather Forecast and Air Pollution index</p>
 
-                    <div className="flex flex-col items-center gap-1 w-2/5">
+                    <div className="flex flex-col items-center gap-1 w-2/5 pb-1">
                         <CitySearch onError={handleError} setIsLoading={setIsLoading} className="w-full" />
                         {error && (
                             <p className="text-red-600 p-1 text-lg w-fit bg-gray-400 rounded-md">

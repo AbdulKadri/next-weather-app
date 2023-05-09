@@ -12,7 +12,7 @@ const AirQuality = ({ data, cityName }) => {
                     <div className="flex flex-col h-full my-2">
                         <div className="flex items-center gap-10 mb-4">
                             <h1 className="text-3xl font-bold">{cityName} Air Quality Index </h1>
-                            <p className="text-2xl font-bold bg-primary text-black/80 p-2 rounded-md">{aqi} - {airQualityDescription}</p>
+                            <p className="text-2xl font-bold bg-primary text-background p-2 rounded-md">{aqi} - {airQualityDescription}</p>
                         </div>
                         <p className="text-lg mb-4">
                             The Air Quality Index (AQI) is on a scale from 1 to 5, with 1 being the best air quality and 5 being the worst. The AQI considers several pollutants to provide an overall assessment of the air quality.

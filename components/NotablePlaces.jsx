@@ -1,7 +1,7 @@
 const NotablePlaces = () => {
     return (
-        <div className="min-h-screen">
-            <h2 className="mt-4 text-5xl text-center">Notable Places</h2>
+        <div className="min-h-screen bg-background text-white">
+            <h2 className="pt-4 text-5xl text-center">Notable Places</h2>
 
             <div className="mt-16 flex justify-around">
                 <div className="h-full border-2 border-solid border-red-800">

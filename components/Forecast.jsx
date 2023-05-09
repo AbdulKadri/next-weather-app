@@ -51,7 +51,7 @@ const Forecast = ({ data, unit }) => {
     return (
         <>
             {data && (<div className="flex flex-col w-4/5 h-full my-2">
-                <h1 className="text-3xl font-bold mb-4">Daily Forecast</h1>
+                <h1 className="text-3xl font-bold mb-4 text-white">Daily Forecast</h1>
                 <Accordion allowZeroExpanded className="flex flex-col gap-4">
                     {data.list.slice(0, 7).map((day, index) => (
                         <AccordionItem key={index}>

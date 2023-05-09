@@ -115,14 +115,14 @@ const CurrentWeather = ({ data, cityImageUrl, cityImageUsernameData, unit }) => 
 
     return (
         <>
-            {data && (<div className='flex w-full h-[90vh] relative'>
+            {data && (<div className='flex w-4/5 h-[90vh] relative'>
                 <div className='basis-1/2'>
                     <Image src={cityImage} alt='city image' width={1920} height={1080} className='w-full h-full' priority={true} />
                     <p className='absolute bottom-0 left-0 text-white font-bold p-3 bg-black/30 rounded-lg'>
                         Photo by <a href={`http://unsplash.com/${cityImageUsername}`} target='_blank' rel="noopener noreferrer"><u>{cityImageUsername}</u></a>
                     </p>
                 </div>
-                <div className='basis-1/2 flex flex-col items-center bg-black/80 text-white'>
+                <div className='basis-1/2 flex flex-col items-center text-white'>
                     <div className='m-2'>
                         <h1 className="text-5xl m-2 text-center text-white bold">{cityName} {countryName}</h1>
                         <p className="text-center text-primary text-3xl">At {currentDate}, {currentTime}</p>

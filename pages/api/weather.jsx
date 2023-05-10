@@ -1,4 +1,3 @@
-// pages/api/getWeatherData.js
 import axios from 'axios';
 
 const getWeatherData = async (req, res) => {

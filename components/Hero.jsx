@@ -45,14 +45,14 @@ const Hero = () => {
 
     return (
         <main lang='en'>
-            <div className="relative min-h-[80vh] w-screen
+            <div className="relative min-h-[100vh] w-screen
        bg-temp-image bg-cover bg-center bg-no-repeat shadow-cover
        grid grid-cols-2 place-content-center place-items-stretch">
                 <div className="flex flex-col justify-center items-center">
                     <h1 className="text-5xl text-white w-4/5 text-center">
                         Curious About your city?
                     </h1>
-                    <p className="text-2xl text-white w-4/5 text-center py-3">Discover the Current Weather, Weather Forecast and Air Pollution index</p>
+                    <p className="text-2xl text-white w-4/5 text-center py-3">Discover the Current Weather, Weather Forecast & Air Pollution index</p>
 
                     <div className="flex flex-col items-center gap-1 w-2/5 pb-1">
                         <CitySearch onError={handleError} setIsLoading={setIsLoading} className="w-full" />

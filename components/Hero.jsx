@@ -3,6 +3,7 @@ import { FaMapPin } from 'react-icons/fa'
 import CitySearch from '../components/CitySearch'
 import { useRouter } from 'next/router'
 import Loading from '../components/Loading'
+import Canvas from '../components/Canvas'
 
 const Hero = () => {
     const [error, setError] = useState(false);
@@ -46,8 +47,8 @@ const Hero = () => {
     return (
         <main lang='en'>
             <div className="relative min-h-[100vh] w-screen
-       bg-temp-image bg-cover bg-center bg-no-repeat shadow-cover
-       grid grid-cols-2 place-content-center place-items-stretch">
+       bg-hero-background bg-cover bg-center bg-no-repeat shadow-cover
+       grid grid-cols-2">
                 <div className="flex flex-col justify-center items-center">
                     <h1 className="text-5xl text-white w-4/5 text-center">
                         Curious About your city?
@@ -73,6 +74,10 @@ const Hero = () => {
                         {' '}
                         <a href="https://unsplash.com/@benobro" target='_blank' rel="noopener noreferrer"><u>ben o'bro</u></a>
                     </p>
+                </div>
+
+                <div className="h-full w-full">
+                    <Canvas />
                 </div>
             </div>
         </main>

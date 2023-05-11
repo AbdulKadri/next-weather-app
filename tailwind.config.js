@@ -11,7 +11,7 @@ module.exports = {
         quicksand: ['var(--font-quicksand)'],
       },
       backgroundImage: {
-        'temp-image': "url('/Temp-background.jpg')",
+        'hero-background': "url('/Hero-Background.jpg')",
       },
       boxShadow: {
         'cover': 'inset 0 0 0 1000px rgba(0,0,0,.4);'

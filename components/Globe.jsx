@@ -1,13 +1,13 @@
 import { useRef, useMemo, useEffect } from 'react';
-import { useFrame, useLoader } from 'react-three-fiber';
-import { TextureLoader, SphereBufferGeometry, MeshStandardMaterial } from 'three';
+import { useFrame, useLoader } from '@react-three/fiber';
+import { TextureLoader, SphereGeometry, MeshStandardMaterial } from 'three';
 import { gsap } from 'gsap';
 
 const Globe = ({ textureUrl, onPointerDown }) => {
     const globeRef = useRef(); // Reference to the globe mesh
     const texture = useLoader(TextureLoader, textureUrl); // Load the texture
 
-    const geometry = useMemo(() => new SphereBufferGeometry(3, 64, 64), []);
+    const geometry = useMemo(() => new SphereGeometry(3, 64, 64), []);
     const material = useMemo(() => {
         const texture = new TextureLoader().load(textureUrl);
         return new MeshStandardMaterial({ map: texture });

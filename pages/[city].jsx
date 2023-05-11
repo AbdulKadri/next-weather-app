@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Head from 'next/head';
 import Navbar from '../components/Navbar'
 import axios from "axios"
@@ -7,11 +7,16 @@ import Forecast from '@/components/Forecast';
 import { useRouter } from 'next/router';
 import Loading from '@/components/Loading';
 import AirQuality from '@/components/AirQuality';
+import { gsap } from 'gsap';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 const CityPage = ({ currentWeatherData, forecastData, airQualityData, cityImageUrl, cityImageUsernameData }) => {
     const [title, setTitle] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [unit, setUnit] = useState('metric');
+    const switchButtonRef = useRef(null);
 
     const router = useRouter();
 
@@ -19,6 +24,34 @@ const CityPage = ({ currentWeatherData, forecastData, airQualityData, cityImageU
         setTitle(`Apex Weather | ${currentWeatherData.name}`);
         setIsLoading(false);
     }, [currentWeatherData]);
+
+
+    useEffect(() => {
+        gsap.fromTo(
+            switchButtonRef.current,
+            { x: -10, y: -10 },
+            {
+                x: 10,
+                y: 10,
+                repeat: 3,
+                yoyo: true,
+                duration: 0.1,
+                ease: 'power1.inOut',
+                onComplete: () => {
+                    gsap.set(switchButtonRef.current, { x: 0, y: 0 });
+                },
+            }
+        );
+    }, [])
+
+    const showToast = (message) => {
+        toast.success(message, {
+            position: toast.POSITION.BOTTOM_CENTER,
+            autoClose: 2000,
+            closeButton: true,
+        });
+    };
+
 
     if (isLoading) return <Loading />;
 
@@ -31,16 +64,18 @@ const CityPage = ({ currentWeatherData, forecastData, airQualityData, cityImageU
                 <Navbar setIsLoading={setIsLoading} />
             </div>
             <button
+                ref={switchButtonRef}
                 className="absolute top-9 left-1/2 transform -translate-x-1/2 bg-primary text-background font-bold py-1 px-4 rounded mb-4"
-                onClick={() => {
+                onClick={async () => {
                     const newUnit = unit === 'metric' ? 'imperial' : 'metric';
                     const lat = currentWeatherData.coord.lat;
                     const lon = currentWeatherData.coord.lon;
-                    setUnit(newUnit);
-                    router.push({
+                    await router.push({
                         pathname: '/city',
                         query: { lat, lon, unit: newUnit },
                     });
+                    setUnit(newUnit);
+                    showToast(`Changed to ${newUnit === 'metric' ? 'Celsius' : 'Fahrenheit'}`);
                 }}
             >
                 Switch to {unit === 'metric' ? 'Fahrenheit' : 'Celsius'}
@@ -59,6 +94,8 @@ const CityPage = ({ currentWeatherData, forecastData, airQualityData, cityImageU
                     <AirQuality data={airQualityData} cityName={currentWeatherData.name} />
                 )}
             </div>
+
+            <ToastContainer />
         </div>
     );
 }

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { FaHome } from 'react-icons/fa';
+import { FaHome, FaSpinner } from 'react-icons/fa';
 
 const Loading = () => {
     const [showLink, setShowLink] = useState(false);
@@ -24,8 +24,13 @@ const Loading = () => {
                     </button>
                 </a>
             )}
-            <div className="flex justify-center items-center bg-black/80 h-screen text-white text-3xl">
-                Please Wait Loading...
+            <div className="flex flex-col justify-center items-center bg-black/80 h-screen text-white text-3xl">
+                <div className="animate-spin h-12 w-12 mb-4">
+                    <FaSpinner className="h-full w-full text-[#68EDC6]" />
+                </div>
+                <p className="text-center">
+                    <span className="font-bold">Hang tight!</span> We're preparing your page...
+                </p>
             </div>
         </div>
     );

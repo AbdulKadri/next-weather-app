@@ -2,14 +2,17 @@ import { useState, useEffect, useRef } from 'react';
 import Head from 'next/head';
 import Navbar from '../components/Navbar'
 import axios from "axios"
-import CurrentWeather from '@/components/currentWeather';
-import Forecast from '@/components/Forecast';
 import { useRouter } from 'next/router';
 import Loading from '@/components/Loading';
-import AirQuality from '@/components/AirQuality';
 import { gsap } from 'gsap';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import dynamic from 'next/dynamic'
+
+// Dynamic imports
+const CurrentWeather = dynamic(() => import('@/components/currentWeather'));
+const Forecast = dynamic(() => import('@/components/Forecast'));
+const AirQuality = dynamic(() => import('@/components/AirQuality'));
 
 
 const CityPage = ({ currentWeatherData, forecastData, airQualityData, cityImageUrl, cityImageUsernameData }) => {
@@ -65,7 +68,7 @@ const CityPage = ({ currentWeatherData, forecastData, airQualityData, cityImageU
             </div>
             <button
                 ref={switchButtonRef}
-                className="absolute top-9 left-1/2 transform -translate-x-1/2 bg-primary text-background font-bold py-1 px-4 rounded mb-4"
+                className="absolute top-15 sm:top-9 w-[fit] left-1/2 transform -translate-x-1/2 bg-primary text-background font-bold py-1 px-2 sm:px-4 rounded md:mb-4"
                 onClick={async () => {
                     const newUnit = unit === 'metric' ? 'imperial' : 'metric';
                     const lat = currentWeatherData.coord.lat;

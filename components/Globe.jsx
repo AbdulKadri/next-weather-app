@@ -8,10 +8,7 @@ const Globe = ({ textureUrl, onPointerDown }) => {
     const texture = useLoader(TextureLoader, textureUrl); // Load the texture
 
     const geometry = useMemo(() => new SphereGeometry(3, 64, 64), []);
-    const material = useMemo(() => {
-        const texture = new TextureLoader().load(textureUrl);
-        return new MeshStandardMaterial({ map: texture });
-    }, [textureUrl]); // Load the texture
+    const material = useMemo(() => new MeshStandardMaterial({ map: texture }), [texture]);
 
     useFrame(({ clock }) => {
         globeRef.current.rotation.y = 0.01 * clock.getElapsedTime();
@@ -20,7 +17,7 @@ const Globe = ({ textureUrl, onPointerDown }) => {
     useEffect(() => {
         const timeline = gsap.timeline({ defaults: { duration: 1 } });
         timeline.fromTo(globeRef.current.scale, { x: 0, y: 0, z: 0 }, { x: 1, y: 1, z: 1 });
-    }, []); // Animate the globe scale
+    }, []); // Animate the globe
 
     if (!texture) {
         return null;

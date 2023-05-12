@@ -115,16 +115,16 @@ const CurrentWeather = ({ data, cityImageUrl, cityImageUsernameData, unit }) => 
 
     return (
         <>
-            {data && (<div className='flex w-4/5 h-[90vh] relative'>
-                <div className='basis-1/2'>
-                    <Image src={cityImage} alt='city image' width={1920} height={1080} className='w-full h-full' priority={true} />
+            {data && (<div className='flex flex-col-reverse md:flex-row w-5/6 lg:w-4/5 lg:h-[90vh] relative'>
+                <div className='w-full md:basis-1/2'>
+                    <Image src={cityImage} alt='city image' width={1920} height={1080} className='w-full h-full rounded-md' priority={true} />
                     <p className='absolute bottom-0 left-0 text-white font-bold p-3 bg-black/30 rounded-lg'>
                         Photo by <a href={`http://unsplash.com/${cityImageUsername}`} target='_blank' rel="noopener noreferrer"><u>{cityImageUsername}</u></a>
                     </p>
                 </div>
-                <div className='basis-1/2 flex flex-col items-center text-white'>
+                <div className='w-full md:basis-1/2 flex flex-col items-center text-white'>
                     <div className='m-2'>
-                        <h1 className="text-5xl m-2 text-center text-white bold">{cityName} {countryName}</h1>
+                        <h1 className="text-5xl m-2 text-center text-white bold">{cityName}, {countryName}</h1>
                         <p className="text-center text-primary text-3xl">At {currentDate}, {currentTime}</p>
                     </div>
                     <div className='flex items-center justify-center w-full'>
@@ -142,26 +142,26 @@ const CurrentWeather = ({ data, cityImageUrl, cityImageUsernameData, unit }) => 
                                 </div>
                                 <div className='flex justify-evenly w-full mt-2 px-5'>
                                     <div className='text-center'>
-                                        <p className='text-md'>Pressure</p>
-                                        <p className='text-lg font-bold'>{data.main.pressure}{unitVariables.pressure}</p>
+                                        <p className='text-sm lg:text-md'>Pressure</p>
+                                        <p className='text:md lg:text-lg font-bold'>{data.main.pressure}{unitVariables.pressure}</p>
                                     </div>
                                     <div className='text-center'>
-                                        <p className='text-md'>Humidity</p>
-                                        <p className='text-lg font-bold'>{data.main.humidity}%</p>
+                                        <p className='text-sm lg:text-md'>Humidity</p>
+                                        <p className='text:md lg:text-lg font-bold'>{data.main.humidity}%</p>
                                     </div>
                                     <div className='text-center'>
-                                        <p className='text-md'>Cloudiness</p>
-                                        <p className='text-lg font-bold'>{data.clouds.all}%</p>
+                                        <p className='text-sm lg:text-md'>Cloudiness</p>
+                                        <p className='text:md lg:text-lg font-bold'>{data.clouds.all}%</p>
                                     </div>
                                     <div className='text-center'>
-                                        <p className='text-md'>Wind Speed</p>
-                                        <p className='text-lg font-bold'>{data.wind.speed}{unitVariables.speed}</p>
+                                        <p className='text-sm lg:text-md'>Wind Speed</p>
+                                        <p className='text:md lg:text-lg font-bold'>{data.wind.speed}{unitVariables.speed}</p>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div className="w-4/5 h-full justify-self-center self-center border-2 border-solid border-white rounded-lg m-2">
+                    <div className="h-[20rem] w-full md:w-4/5 justify-self-end self-center border-2 border-solid border-white rounded-lg m-2">
                         <MapLocation lat={lat} lon={lon} />
                     </div>
                 </div>

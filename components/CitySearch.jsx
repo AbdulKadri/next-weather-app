@@ -50,7 +50,7 @@ const CitySearch = ({ onError, setIsLoading, className }) => {
         <div className={`${className}`}>
             <AsyncPaginate
                 instanceId={useId()}
-                placeholder="Search a city..."
+                placeholder="Enter a city name..."
                 value={search}
                 debounceTimeout={600}
                 onChange={handleOnChange}

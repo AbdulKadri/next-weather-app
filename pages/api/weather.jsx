@@ -10,24 +10,21 @@ const getWeatherData = async (req, res) => {
             axios.get(`http://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon=${lon}&appid=${process.env.WEATHER_API_KEY}`)
         ]);
 
-        const currentWeatherData = currentWeatherResponse.data;
-        const forecastData = forecastResponse.data;
-        const airQualityData = airQualityResponse.data;
-
-        if (!currentWeatherData || !forecastData || !airQualityData) {
+        if (currentWeatherResponse.status !== 200 || forecastResponse.status !== 200 || airQualityResponse.status !== 200) {
             res.status(404).json({ message: 'Weather data not found' });
             return;
         }
 
+        const currentWeatherData = currentWeatherResponse.data;
+        const forecastData = forecastResponse.data;
+        const airQualityData = airQualityResponse.data;
+
         res.status(200).json({ currentWeatherData, forecastData, airQualityData });
     } catch (error) {
         console.error(error);
-        if (error.response && error.response.status === 404) {
-            res.status(404).json({ message: 'Weather data not found' });
-        } else {
-            res.status(500).json({ message: 'An error occurred' });
-        }
+        res.status(500).json({ message: 'An error occurred' });
     }
 }
+
 
 export default getWeatherData;

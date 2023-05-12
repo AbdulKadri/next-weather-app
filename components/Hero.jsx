@@ -1,9 +1,9 @@
-import { useState } from 'react';
+import { useState, Suspense, lazy } from 'react';
 import { FaMapPin } from 'react-icons/fa'
 import CitySearch from '../components/CitySearch'
 import { useRouter } from 'next/router'
 import Loading from '../components/Loading'
-import Canvas from '../components/Canvas'
+const Canvas = lazy(() => import('../components/Canvas'));
 
 const Hero = () => {
     const [error, setError] = useState(false);
@@ -47,15 +47,15 @@ const Hero = () => {
     return (
         <main lang='en'>
             <div className="relative min-h-[100vh] w-screen
-       bg-hero-background bg-cover bg-center bg-no-repeat shadow-cover
-       grid grid-cols-2">
-                <div className="flex flex-col justify-center items-center">
-                    <h1 className="text-5xl text-white w-4/5 text-center">
-                        Curious About your city?
+   bg-hero-background bg-cover bg-center bg-no-repeat shadow-cover
+   flex flex-col justify-center items-center overflow-x-hidden lg:grid lg:grid-cols-2">
+                <div className="flex flex-col justify-center items-center md:mt-6 lg:m-3 gap-3">
+                    <h1 className="text-2xl md:text-3xl lg:text-4xl text-white w-4/5 text-center font-bold">
+                        Curious About Your City?
                     </h1>
-                    <p className="text-2xl text-white w-4/5 text-center py-3">Discover the Current Weather, Weather Forecast & Air Pollution index</p>
+                    <p className="text-lg md:text-xl lg:text-2xl text-white w-4/5 text-center">Discover the Current Weather, Weather Forecast & Air Pollution index below</p>
 
-                    <div className="flex flex-col items-center gap-1 w-2/5 pb-1">
+                    <div className="flex flex-col items-center gap-1 w-4/5 md:w-3/5">
                         <CitySearch onError={handleError} setIsLoading={setIsLoading} className="w-full" />
                         {error && (
                             <p className="text-red-600 p-1 text-lg w-fit bg-gray-400 rounded-md">
@@ -64,8 +64,8 @@ const Hero = () => {
                         )}
                     </div>
 
-                    <button onClick={handleGetLocation} className="flex mt-2">
-                        <FaMapPin color="#68EDC6" className="h-6 w-6" />
+                    <button onClick={handleGetLocation} className="flex justify-center items-center bg-gray-400 rounded-md p-1">
+                        <FaMapPin color="#68EDC6" className="h-4 md:h-5 lg:h-6 w-4 md:w-5 lg:w-6" />
                         <p className="text-xl text-white">Check your location</p>
                     </button>
 
@@ -76,8 +76,10 @@ const Hero = () => {
                     </p>
                 </div>
 
-                <div className="h-full w-full">
-                    <Canvas />
+                <div className="w-[400px] md:h-[500px] lg:h-full h-[400px] md:w-[500px] lg:w-full">
+                    <Suspense>
+                        <Canvas />
+                    </Suspense>
                 </div>
             </div>
         </main>

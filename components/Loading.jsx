@@ -29,7 +29,7 @@ const Loading = () => {
                     <FaSpinner className="h-full w-full text-[#68EDC6]" />
                 </div>
                 <p className="text-center">
-                    <span className="font-bold">Hang tight!</span> We're preparing your page...
+                    <span className="font-bold">Hang tight!</span> We&apos;re preparing your page...
                 </p>
             </div>
         </div>

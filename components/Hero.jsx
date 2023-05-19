@@ -72,7 +72,7 @@ const Hero = () => {
                     <p className="absolute bottom-0 left-0 text-white font-bold p-3">
                         Photo by
                         {' '}
-                        <a href="https://unsplash.com/@benobro" target='_blank' rel="noopener noreferrer"><u>ben o'bro</u></a>
+                        <a href="https://unsplash.com/@benobro" target='_blank' rel="noopener noreferrer"><u>ben o&apos;bro</u></a>
                     </p>
                 </div>
 

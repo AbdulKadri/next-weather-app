@@ -9,7 +9,6 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@next/swc-darwin-x64": "^13.4.3",
     "@react-three/drei": "^9.67.0",
     "@react-three/fiber": "^8.13.0",
     "autoprefixer": "10.4.14",
@@ -30,5 +29,8 @@
     "react-select-async-paginate": "^0.7.2",
     "react-toastify": "^9.1.2",
     "tailwindcss": "3.3.1"
+  },
+  "devDependencies": {
+    "@next/swc-darwin-x64": "^13.4.3"
   }
 }

@@ -130,7 +130,7 @@ const CurrentWeather = ({ data, cityImageUrl, cityImageUsernameData, unit }) => 
                     <div className='flex items-center justify-center w-full'>
                         <div className='flex flex-col items-center w-full'>
                             <div className='flex items-center gap-2 mt-2'>
-                                <img src={`icons/${data.weather[0].icon}.png`} width={80} height={80} />
+                                <Image src={`/icons/${data.weather[0].icon}.png`} alt="Weather Icon" width={80} height={80} />
                                 <p className='text-center text-5xl font-bold'>{currentTemp}{unitVariables.temp}</p>
                             </div>
                             <div className='flex flex-col items-center w-full mt-2'>

@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Accordion, AccordionItem, AccordionItemButton, AccordionItemHeading, AccordionItemPanel } from "react-accessible-accordion";
+import Image from "next/image";
 
 const WEEK_DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
@@ -58,7 +59,7 @@ const Forecast = ({ data, unit }) => {
                             <AccordionItemHeading>
                                 <AccordionItemButton className="flex justify-between items-center p-4 bg-gradient-to-r from-blue-200 to-blue-600 rounded-md">
                                     <div className="flex items-center gap-2 sm:gap-4">
-                                        <img src={`icons/${day.weather[0].icon}.png`} alt="weather icon" className="w-12 h-12 sm:w-14 sm:h-14" />
+                                        <Image src={`/icons/${day.weather[0].icon}.png`} alt="Weather Icon" width={48} height={48} className="w-12 h-12 sm:w-14 sm:h-14" />
                                         <div>
                                             <p className="text-lg md:text-2xl font-bold">{forecastDays[index]}</p>
                                             <div className="flex flex-col sm:flex-row sm:items-center sm:gap-2">

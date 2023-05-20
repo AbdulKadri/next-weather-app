@@ -10,7 +10,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import dynamic from 'next/dynamic'
 
 // Dynamic imports
-const CurrentWeather = dynamic(() => import('../components/currentWeather'));
+const CurrentWeather = dynamic(() => import('../components/CurrentWeather'));
 const Forecast = dynamic(() => import('../components/Forecast'));
 const AirQuality = dynamic(() => import('../components/AirQuality'));
 

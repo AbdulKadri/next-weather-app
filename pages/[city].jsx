@@ -3,7 +3,7 @@ import Head from 'next/head';
 import Navbar from '../components/Navbar'
 import axios from "axios"
 import { useRouter } from 'next/router';
-import Loading from '@/components/Loading';
+import Loading from '../components/Loading'
 import { gsap } from 'gsap';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';

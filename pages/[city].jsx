@@ -10,9 +10,9 @@ import 'react-toastify/dist/ReactToastify.css';
 import dynamic from 'next/dynamic'
 
 // Dynamic imports
-const CurrentWeather = dynamic(() => import('@/components/currentWeather'));
-const Forecast = dynamic(() => import('@/components/Forecast'));
-const AirQuality = dynamic(() => import('@/components/AirQuality'));
+const CurrentWeather = dynamic(() => import('../components/currentWeather'));
+const Forecast = dynamic(() => import('../components/Forecast'));
+const AirQuality = dynamic(() => import('../components/AirQuality'));
 
 
 const CityPage = ({ currentWeatherData, forecastData, airQualityData, cityImageUrl, cityImageUsernameData }) => {
